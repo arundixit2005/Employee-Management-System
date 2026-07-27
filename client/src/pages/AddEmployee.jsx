@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import AdminLayout from "../layouts/AdminLayout";
 import API from "../services/api";
 
 function AddEmployee() {
@@ -42,110 +44,160 @@ function AddEmployee() {
     try {
       await API.post("/employees/add", data);
 
-      alert("Employee Added Successfully");
+      toast.success("Employee Added Successfully");
 
       navigate("/employees");
     } catch (error) {
       console.log(error);
-      alert("Failed to Add Employee");
+
+      toast.error(
+        error.response?.data?.message || "Failed to Add Employee"
+      );
     }
   };
 
   return (
-    <div style={{ padding: "30px", fontFamily: "Arial" }}>
-      <h1>Add Employee</h1>
+    <AdminLayout>
+      <div className="container">
 
-      <form
-        onSubmit={handleSubmit}
-        style={{
-          display: "grid",
-          gap: "15px",
-          maxWidth: "500px",
-        }}
-      >
-        <input
-          name="employeeId"
-          placeholder="Employee ID"
-          onChange={handleChange}
-          required
-        />
+        <div className="card shadow">
 
-        <input
-          name="name"
-          placeholder="Name"
-          onChange={handleChange}
-          required
-        />
+          <div className="card-header bg-primary text-white">
+            <h3 className="mb-0">Add Employee</h3>
+          </div>
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          onChange={handleChange}
-          required
-        />
+          <div className="card-body">
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          onChange={handleChange}
-          required
-        />
+            <form onSubmit={handleSubmit}>
 
-        <input
-          name="department"
-          placeholder="Department"
-          onChange={handleChange}
-          required
-        />
+              <div className="row">
 
-        <input
-          name="designation"
-          placeholder="Designation"
-          onChange={handleChange}
-          required
-        />
+                <div className="col-md-6 mb-3">
+                  <label>Employee ID</label>
+                  <input
+                    type="text"
+                    name="employeeId"
+                    className="form-control"
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-        <input
-          type="number"
-          name="salary"
-          placeholder="Salary"
-          onChange={handleChange}
-          required
-        />
+                <div className="col-md-6 mb-3">
+                  <label>Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    className="form-control"
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-        <input
-          name="phone"
-          placeholder="Phone"
-          onChange={handleChange}
-          required
-        />
+                <div className="col-md-6 mb-3">
+                  <label>Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    className="form-control"
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-        <textarea
-          name="address"
-          placeholder="Address"
-          onChange={handleChange}
-          required
-        />
+                <div className="col-md-6 mb-3">
+                  <label>Password</label>
+                  <input
+                    type="password"
+                    name="password"
+                    className="form-control"
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setImage(e.target.files[0])}
-        />
+                <div className="col-md-6 mb-3">
+                  <label>Department</label>
+                  <input
+                    type="text"
+                    name="department"
+                    className="form-control"
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-        <button
-          type="submit"
-          style={{
-            padding: "12px",
-            cursor: "pointer",
-          }}
-        >
-          Add Employee
-        </button>
-      </form>
-    </div>
+                <div className="col-md-6 mb-3">
+                  <label>Designation</label>
+                  <input
+                    type="text"
+                    name="designation"
+                    className="form-control"
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div className="col-md-6 mb-3">
+                  <label>Salary</label>
+                  <input
+                    type="number"
+                    name="salary"
+                    className="form-control"
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div className="col-md-6 mb-3">
+                  <label>Phone</label>
+                  <input
+                    type="text"
+                    name="phone"
+                    className="form-control"
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div className="col-12 mb-3">
+                  <label>Address</label>
+                  <textarea
+                    name="address"
+                    className="form-control"
+                    rows="3"
+                    onChange={handleChange}
+                    required
+                  ></textarea>
+                </div>
+
+                <div className="col-12 mb-4">
+                  <label>Employee Photo</label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="form-control"
+                    onChange={(e) => setImage(e.target.files[0])}
+                  />
+                </div>
+
+              </div>
+
+              <button
+                type="submit"
+                className="btn btn-success"
+              >
+                Add Employee
+              </button>
+
+            </form>
+
+          </div>
+
+        </div>
+
+      </div>
+    </AdminLayout>
   );
 }
 

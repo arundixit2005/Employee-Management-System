@@ -1,3 +1,4 @@
+import EmployeeChart from "../components/EmployeeChart";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import AdminLayout from "../layouts/AdminLayout";
@@ -39,6 +40,8 @@ function Dashboard() {
     <AdminLayout>
       <div className="container-fluid">
 
+        {/* Header */}
+
         <div className="d-flex justify-content-between align-items-center mb-4">
           <h2>Dashboard</h2>
 
@@ -47,38 +50,40 @@ function Dashboard() {
           </Link>
         </div>
 
+        {/* Dashboard Cards */}
+
         <div className="row">
 
-          <div className="col-md-3 mb-4">
+          <div className="col-lg-3 col-md-6 mb-4">
             <div className="card shadow border-0 bg-primary text-white">
-              <div className="card-body">
+              <div className="card-body text-center">
                 <h5>Total Employees</h5>
                 <h2>{totalEmployees}</h2>
               </div>
             </div>
           </div>
 
-          <div className="col-md-3 mb-4">
+          <div className="col-lg-3 col-md-6 mb-4">
             <div className="card shadow border-0 bg-success text-white">
-              <div className="card-body">
+              <div className="card-body text-center">
                 <h5>Departments</h5>
                 <h2>{totalDepartments}</h2>
               </div>
             </div>
           </div>
 
-          <div className="col-md-3 mb-4">
-            <div className="card shadow border-0 bg-warning text-dark">
-              <div className="card-body">
+          <div className="col-lg-3 col-md-6 mb-4">
+            <div className="card shadow border-0 bg-warning">
+              <div className="card-body text-center">
                 <h5>Total Salary</h5>
                 <h2>₹{totalSalary}</h2>
               </div>
             </div>
           </div>
 
-          <div className="col-md-3 mb-4">
+          <div className="col-lg-3 col-md-6 mb-4">
             <div className="card shadow border-0 bg-danger text-white">
-              <div className="card-body">
+              <div className="card-body text-center">
                 <h5>Average Salary</h5>
                 <h2>₹{averageSalary}</h2>
               </div>
@@ -87,18 +92,42 @@ function Dashboard() {
 
         </div>
 
-        <div className="card shadow mt-4">
+        {/* Pie Chart */}
+
+        <div className="card shadow mb-4">
+
+          <div className="card-header bg-success text-white">
+            <h5 className="mb-0">Employees by Department</h5>
+          </div>
+
+          <div className="card-body">
+
+            {employees.length > 0 ? (
+              <EmployeeChart employees={employees} />
+            ) : (
+              <p className="text-center">No Employee Data Available</p>
+            )}
+
+          </div>
+
+        </div>
+
+        {/* Recent Employees */}
+
+        <div className="card shadow">
+
           <div className="card-header bg-dark text-white">
-            Recent Employees
+            <h5 className="mb-0">Recent Employees</h5>
           </div>
 
           <div className="card-body">
 
             <div className="table-responsive">
 
-              <table className="table table-hover">
+              <table className="table table-hover align-middle">
 
-                <thead>
+                <thead className="table-light">
+
                   <tr>
                     <th>Photo</th>
                     <th>Name</th>
@@ -106,46 +135,57 @@ function Dashboard() {
                     <th>Designation</th>
                     <th>Salary</th>
                   </tr>
+
                 </thead>
 
                 <tbody>
 
-                  {employees.slice(0, 5).map((emp) => (
-                    <tr key={emp._id}>
+                  {employees.length > 0 ? (
+                    employees.slice(0, 5).map((emp) => (
+                      <tr key={emp._id}>
 
-                      <td>
-                        {emp.image ? (
-                          <img
-                            src={`${API.defaults.baseURL.replace(
-                              "/api",
-                              ""
-                            )}/uploads/${emp.image}`}
-                            alt={emp.name}
-                            width="45"
-                            height="45"
-                            style={{
-                              borderRadius: "50%",
-                              objectFit: "cover",
-                            }}
-                          />
-                        ) : (
-                          <img
-                            src="https://via.placeholder.com/45"
-                            alt="No"
-                            width="45"
-                            height="45"
-                            style={{ borderRadius: "50%" }}
-                          />
-                        )}
+                        <td>
+                          {emp.image ? (
+                            <img
+                              src={`${API.defaults.baseURL.replace(
+                                "/api",
+                                ""
+                              )}/uploads/${emp.image}`}
+                              alt={emp.name}
+                              width="45"
+                              height="45"
+                              style={{
+                                borderRadius: "50%",
+                                objectFit: "cover",
+                              }}
+                            />
+                          ) : (
+                            <img
+                              src="https://via.placeholder.com/45"
+                              alt="No Image"
+                              width="45"
+                              height="45"
+                              style={{
+                                borderRadius: "50%",
+                              }}
+                            />
+                          )}
+                        </td>
+
+                        <td>{emp.name}</td>
+                        <td>{emp.department}</td>
+                        <td>{emp.designation}</td>
+                        <td>₹{emp.salary}</td>
+
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="5" className="text-center">
+                        No Employees Found
                       </td>
-
-                      <td>{emp.name}</td>
-                      <td>{emp.department}</td>
-                      <td>{emp.designation}</td>
-                      <td>₹{emp.salary}</td>
-
                     </tr>
-                  ))}
+                  )}
 
                 </tbody>
 
@@ -154,6 +194,7 @@ function Dashboard() {
             </div>
 
           </div>
+
         </div>
 
       </div>

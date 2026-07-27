@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import API from "../services/api";
 
 function Login() {
@@ -18,14 +19,13 @@ function Login() {
       });
 
       localStorage.setItem("token", res.data.token);
-      
-
-      alert("Login Successful");
       localStorage.setItem("admin", JSON.stringify(res.data.admin));
+
+      toast.success("Login Successful");
 
       navigate("/dashboard");
     } catch (err) {
-      alert(err.response?.data?.message || "Login Failed");
+      toast.error(err.response?.data?.message || "Login Failed");
     }
   };
 

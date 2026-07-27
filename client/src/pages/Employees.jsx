@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import AdminLayout from "../layouts/AdminLayout";
 import API from "../services/api";
 
@@ -17,6 +18,7 @@ function Employees() {
       setEmployees(res.data.employees);
     } catch (error) {
       console.log(error);
+      toast.error("Failed to load employees");
     }
   };
 
@@ -26,11 +28,16 @@ function Employees() {
 
     try {
       await API.delete(`/employees/${id}`);
-      alert("Employee Deleted Successfully");
+
+      toast.success("Employee Deleted Successfully");
+
       getEmployees();
     } catch (error) {
       console.log(error);
-      alert("Delete Failed");
+
+      toast.error(
+        error.response?.data?.message || "Delete Failed"
+      );
     }
   };
 
@@ -67,6 +74,7 @@ function Employees() {
         />
 
         <div className="card shadow">
+
           <div className="card-body">
 
             <div className="table-responsive">
@@ -162,6 +170,7 @@ function Employees() {
             </div>
 
           </div>
+
         </div>
 
       </div>
